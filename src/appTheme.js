@@ -1,9 +1,13 @@
-import { yellow } from "@material-ui/core/colors";
 import { createTheme } from "@mui/material/styles";
 
 const appTheme = createTheme({
     pallete: {
-        primary: yellow,
+        primary: {
+            main: '#000000',
+        },
+        background: {
+            white: 'red',
+        }
     },
     spacing: 8,
 });

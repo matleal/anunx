@@ -1,4 +1,5 @@
-import { Container, Typography, Box, TextField, Select, Button } from '@mui/material';
+import { DeleteForever } from '@mui/icons-material';
+import { Container, Typography, Box, TextField, Select, Button, IconButton } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import TemplateDefault from '../../src/templates/Default'
@@ -16,6 +17,29 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(3),
         borderRadius: 10,
         boxShadow: 10,
+    },
+    thumbsContainer: {
+        display: 'flex',
+        marginTop: 15,
+    },
+    dropzone: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        padding: 10,
+        margin: '0 15px 15px 0',
+        width: 200,
+        height: 150,
+        backgroundColor: '#FFFFFF',
+        border: '2px dashed black',
+    },
+    thumb: {
+        width: 200,
+        height: 150,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center center',
+        borderRadius: 5,
     },
 }));
 
@@ -86,6 +110,20 @@ const Publish = () => {
                     <Typography component="div" variant="body2">
                         A primeira imagem é a foto principal do anúncio.
                     </Typography>
+                    <Box className={classes.thumbsContainer}>
+                        <Box className={classes.dropzone}>
+                            <Typography variant='body2'>
+                                Clique para adicionar ou arraste a imagem para aqui.
+                            </Typography>
+                        </Box>
+                        <Box className={classes.thumb} sx={{ backgroundImage: 'url(https://source.unsplash.com/random)' }}>
+                            <Box>
+                                <IconButton sx={{ color: 'black' }}>
+                                    <DeleteForever fontSize="large" />
+                                </IconButton>
+                            </Box>
+                        </Box>
+                    </Box>
                 </Box>
             </Container>
 

@@ -1,6 +1,17 @@
-import { DeleteForever } from '@mui/icons-material';
-import { Container, Typography, Box, TextField, Select, Button, IconButton } from '@mui/material';
+import { useState } from 'react';
+import { 
+    Container, 
+    Typography, 
+    Box, 
+    TextField, 
+    Select, 
+    Button, 
+    IconButton
+} from '@mui/material';
+
+import { useDropzone } from 'react-dropzone';
 import { makeStyles } from '@mui/styles';
+import { DeleteForever } from '@mui/icons-material';
 
 import TemplateDefault from '../../src/templates/Default'
 
@@ -20,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     },
     thumbsContainer: {
         display: 'flex',
+        flexWrap: 'wrap',
         marginTop: 15,
     },
     dropzone: {
@@ -37,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
     thumb: {
         width: 200,
         height: 150,
+        margin: '0 15px 15px 0',
         backgroundSize: 'cover',
         backgroundPosition: 'center center',
         borderRadius: 5,
@@ -46,6 +59,23 @@ const useStyles = makeStyles((theme) => ({
 
 const Publish = () => {
     const classes = useStyles();
+    const [files, setFiles] = useState([]);
+
+    const { getRootProps, getInputProps } = useDropzone({
+        accept: 'image/*',
+        onDrop: (acceptedFile) => {
+            const newFiles = acceptedFile.map(file => {
+                return Object.assign(file, {
+                    preview: URL.createObjectURL(file)
+                })
+            })
+
+            setFiles([
+                ...files,
+                ...newFiles,
+            ]);
+        }
+    });
 
     return(
         <TemplateDefault>
@@ -55,7 +85,7 @@ const Publish = () => {
                 </Typography>
                 <Typography component="h2" variant="h5" align="center">
                     Quanto mais detalhado, melhor!
-                </Typography>
+                </Typography> 
             </Container>
 
             <Container maxWidth="md" className={classes.boxContainer}>
@@ -111,18 +141,27 @@ const Publish = () => {
                         A primeira imagem é a foto principal do anúncio.
                     </Typography>
                     <Box className={classes.thumbsContainer}>
-                        <Box className={classes.dropzone}>
+                        <Box className={classes.dropzone} {...getRootProps()}>
+                            <input {...getInputProps()} />
                             <Typography variant='body2'>
                                 Clique para adicionar ou arraste a imagem para aqui.
                             </Typography>
                         </Box>
-                        <Box className={classes.thumb} sx={{ backgroundImage: 'url(https://source.unsplash.com/random)' }}>
-                            <Box>
-                                <IconButton sx={{ color: 'black' }}>
-                                    <DeleteForever fontSize="large" />
-                                </IconButton>
-                            </Box>
-                        </Box>
+                        {
+                            files.map(file => (
+                                <Box 
+                                    key={file.name}
+                                    className={classes.thumb} 
+                                    sx={{ backgroundImage: `url(${file.preview})` }}
+                                >
+                                    <Box>
+                                        <IconButton sx={{ color: 'black' }}>
+                                            <DeleteForever fontSize="large" />
+                                        </IconButton>
+                                    </Box>
+                                </Box>
+                            ))
+                        }
                     </Box>
                 </Box>
             </Container>
